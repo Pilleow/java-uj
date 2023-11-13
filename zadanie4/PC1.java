@@ -1,6 +1,6 @@
 public class PC1 implements PlayerController {
 
-    final byte[][] map = {
+    final byte[][] map1 = { // ustaw STARTPOS = (5, 2)
             {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
             {0, 0, 3, 0, 1, 1, 0, 0, 1, 0},
             {0, 1, 1, 1, 0, 1, 0, 1, 1, 0},
@@ -12,6 +12,20 @@ public class PC1 implements PlayerController {
             {0, 1, 0, 3, 1, 1, 2, 2, 1, 0},
             {0, 1, 0, 0, 0, 0, 0, 0, 0, 0},
     };
+    final byte[][] map2 = { // ustaw STARTPOS = (5, 4)
+            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+            {0, 1, 1, 1, 1, 1, 1, 1, 1, 0},
+            {0, 1, 1, 1, 1, 1, 1, 1, 1, 0},
+            {0, 1, 1, 0, 0, 0, 0, 1, 1, 1},
+            {0, 1, 1, 0, 1, 1, 0, 1, 1, 0},
+            {0, 1, 1, 0, 1, 1, 0, 1, 1, 0},
+            {0, 1, 1, 0, 1, 0, 0, 1, 1, 0},
+            {0, 1, 1, 1, 1, 1, 1, 1, 1, 0},
+            {0, 1, 1, 1, 1, 1, 1, 1, 1, 0},
+            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    };
+
+    final byte[][] map = map1; // TUTAJ ZMIENIA SIĘ MAPĘ
     // 0 - ściana
     // 1 - ścieżka
     // 2 - woda
@@ -61,13 +75,16 @@ public class PC1 implements PlayerController {
         }
     }
 
+    public Position getRelativePos() {
+        return new Position(currentPos.col() - STARTPOS.col(), currentPos.row() - STARTPOS.row());
+    }
+
+
     public void print(Direction direction) {
 
-        Position nextPos = direction.step(currentPos);
         // printing board to screen
         if (!drawnAtPos.equals(currentPos)) {
             drawnAtPos = currentPos;
-            System.out.println(new String(new char[50]).replace("\0", "\r\n"));
 
             int x;
 
@@ -79,7 +96,6 @@ public class PC1 implements PlayerController {
             for (int y = 0; y < map.length; ++y) {
                 for (x = 0; x < map[0].length; ++x) {
                     if (currentPos.row() == y && currentPos.col() == x) System.out.print("\uD83D\uDC0D");
-                    else if (nextPos.row() == y && nextPos.col() == x) System.out.print("**");
                     else {
                         switch (map[y][x]) {
                             case 0:
@@ -101,6 +117,7 @@ public class PC1 implements PlayerController {
                 else System.out.println((y - STARTPOS.row()));
             }
             System.out.println("Times on fire: " + timesOnFire);
+            System.out.println("\n\n");
         }
 
     }

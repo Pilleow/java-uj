@@ -1,4 +1,5 @@
 import java.util.HashMap;
+import java.util.HashSet;
 
 public class Indiana implements Explorer {
 
@@ -39,10 +40,15 @@ public class Indiana implements Explorer {
         // cały czas będziemy się trzymać prawej ściany, chyba że
         // headingOf(direction) == sumOfTurns, wtedy po prostu idziemy naprzód
 
+        // HashSet<Position> positionsToAvoid = new HashSet<>();
+        Position relPos = new Position(0, 0);
         Direction direction = Direction.NORTH;
-        int sumOfTurns = 0; // wielokrotność 90 stopni
+        int sumOfTurns = 0;
 
         while (true) {
+
+            if (!(relPos.col() == controller.getRelativePos().col() && relPos.row() == controller.getRelativePos().row())) throw new IllegalStateException(relPos + " is not representative of " + controller.getRelativePos()); // TODO: TO JEST DO WYRZUCENIA!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
             try {
                 Thread.sleep(100);
             } catch (InterruptedException e) {
@@ -53,20 +59,24 @@ public class Indiana implements Explorer {
             if (headingOf(direction) != 0 || sumOfTurns != 0) {
                 try {
                     controller.move(toTheRightOf(direction));
+                    relPos = toTheRightOf(direction).step(relPos);
                     controller.print(direction);  // TODO: TO JEST DO WYRZUCENIA!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
                     direction = toTheRightOf(direction);
                     sumOfTurns += 1;
                     continue; // zmieniamy kierunek, bo wolne jest na prawo
                 } catch (OnFire e) {
                     System.out.println(e);
+                    relPos = toTheRightOf(direction).step(relPos);
                     continue;
                 } catch (Flooded e) {
                     System.out.println(e);
+                    relPos = toTheRightOf(direction).step(relPos);
                 } catch (Wall e) {
                     System.out.println(e);
                     // super, że mamy ścianę :)
                 } catch (Exit e) {
                     System.out.println(e);
+                    relPos = toTheRightOf(direction).step(relPos);
                     System.out.println("Victoria");
                     return;
                 }
@@ -75,11 +85,14 @@ public class Indiana implements Explorer {
             // teraz, skoro na prawo jest ściana, możemy lecieć dalej
             try {
                 controller.move(direction);
+                relPos = direction.step(relPos);
                 controller.print(direction);  // TODO: TO JEST DO WYRZUCENIA!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
             } catch (OnFire e) {
                 System.out.println(e);
+                relPos = direction.step(relPos);
             } catch (Flooded e) {
                 System.out.println(e);
+                relPos = direction.step(relPos);
             } catch (Wall e) {
                 System.out.println(e);
                 // no to teraz niestety trzeba iść w lewo
@@ -88,6 +101,7 @@ public class Indiana implements Explorer {
                 continue;
             } catch (Exit e) {
                 System.out.println(e);
+                relPos = direction.step(relPos);
                 System.out.println("Victoria");
                 return;
             }
@@ -95,7 +109,7 @@ public class Indiana implements Explorer {
     }
 
     private int headingOf(Direction d) {
-        return switch (d) { // wielokrotność 90 stopni
+        return switch (d) {
             case NORTH -> 0;
             case EAST -> 1;
             case SOUTH -> 2;
