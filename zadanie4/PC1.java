@@ -1,4 +1,3 @@
-import java.util.HashSet;
 
 public class PC1 implements PlayerController {
 
@@ -93,66 +92,11 @@ public class PC1 implements PlayerController {
                     throw new Flooded();
                 case 3:
                     currentPos = nextPos;
-                    System.out.println("FIREEE");
                     timesOnFire += 1;
                     throw new OnFire();
             }
         } catch (IndexOutOfBoundsException e) {
             throw new Exit();
         }
-    }
-
-    public Position getRelativePos() {
-        return new Position(currentPos.col() - STARTPOS.col(), currentPos.row() - STARTPOS.row());
-    }
-
-
-    public void print(HashSet<Position> positionsToAvoid) {
-
-        // printing board to screen
-        if (!drawnAtPos.equals(currentPos)) {
-            drawnAtPos = currentPos;
-            Position p = new Position(0, 0);
-
-            int x;
-
-            for (int y = 0; y < map.length; ++y) {
-                if ((y - STARTPOS.col()) >= 0 && (y - STARTPOS.col()) < 10) System.out.print(" " + (y - STARTPOS.col()));
-                else System.out.print((y - STARTPOS.col()));
-            }
-            System.out.println();
-            for (int y = 0; y < map.length; ++y) {
-                for (x = 0; x < map[0].length; ++x) {
-                    p = new Position(x, y);
-                    if (currentPos.equals(p)) {
-                        System.out.print("\uD83D\uDC0D");
-                        continue;
-                    }
-                    p = new Position(x - STARTPOS.col(), y - STARTPOS.row());
-                    if (positionsToAvoid.contains(p)) System.out.print("\uD83D\uDEAB");
-                    else {
-                        switch (map[y][x]) {
-                            case 0:
-                                System.out.print("\uD83D\uDDFF");
-                                break;
-                            case 1:
-                                System.out.print("  ");
-                                break;
-                            case 2:
-                                System.out.print("\uD83C\uDF0A");
-                                break;
-                            case 3:
-                                System.out.print("\uD83D\uDD25");
-                                break;
-                        }
-                    }
-                }
-                if (y - STARTPOS.row() >= 0 && y - STARTPOS.row() < 10) System.out.println(" " + (y - STARTPOS.row()));
-                else System.out.println((y - STARTPOS.row()));
-            }
-            System.out.println("Times on fire: " + timesOnFire);
-            System.out.println("\n\n");
-        }
-
     }
 }

@@ -9,7 +9,7 @@ public interface PlayerController {
 	 * kierunku. O ile jest to tylko możliwe, położenie gracza ulega zmianie.
 	 * Wyjątkiem jest wystąpienie wyjątku Wall, który oznacza, że ruch nie nastąpił,
 	 * bo na pozycji decelowej znajduje się ściana.
-	 * 
+	 *
 	 * @param direction kierunek ruchu
 	 * @throws OnFire  ruch wykonano, ale docelowe pomieszczenie płonie. Należy
 	 *                 natychmiast (w kolejnym ruchu) z niego uciekać.
@@ -19,8 +19,4 @@ public interface PlayerController {
 	 * @throws Exit    Sukces! Odnaleziono wyjście. Koniec gry!
 	 */
 	public void move(Direction direction) throws OnFire, Flooded, Wall, Exit;
-
-	Position getRelativePos();
-
-	void print(HashSet<Position> positionsToAvoid);
 }

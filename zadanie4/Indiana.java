@@ -37,7 +37,6 @@ public class Indiana implements Explorer {
         Stack<Direction> directionsTaken = new Stack<>();
         HashSet<Position> positionsToAvoid = new HashSet<>();
         Position relPos = new Position(0, 0);
-        Position prevPrevPos = relPos;
         Direction direction = Direction.NORTH;
         int sumOfTurns = 0;
         int waterMovesDone = 0;
@@ -45,20 +44,6 @@ public class Indiana implements Explorer {
         boolean fireToFront = false;
 
         while (true) {
-
-            controller.print(positionsToAvoid);  // TODO: TO JEST DO WYRZUCENIA!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-            if (!(relPos.col() == controller.getRelativePos().col() && relPos.row() == controller.getRelativePos().row())) {
-                throw new IllegalStateException(relPos + " is not representative of " + controller.getRelativePos());
-            }// TODO: TO JEST DO WYRZUCENIA!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
-            System.out.println("WATER MOVES DONE: " + waterMovesDone);
-
-            try {
-                Thread.sleep(250);
-            } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
-            }
-
             // Najpierw: czy musimy uciekać? (np. płomienie).
             if (fireToRight || fireToFront) {
                 if (directionsTaken.isEmpty()) directionsTaken.push(directions[(int)(Math.random() * directions.length)]);
@@ -99,7 +84,6 @@ public class Indiana implements Explorer {
 
             // najpierw sprawdzamy, czy na prawo jest ściana lub jakieś płomienie itp.
             if ((headingOf(direction) != 0 || sumOfTurns != 0) && !positionsToAvoid.contains(toTheRightOf(direction).step(relPos))) {
-                if (!positionsToAvoid.isEmpty()) prevPrevPos = oppositeOf(directionsTaken.peek()).step(relPos);
                 try {
                     controller.move(toTheRightOf(direction));
                     relPos = toTheRightOf(direction).step(relPos);
@@ -129,13 +113,6 @@ public class Indiana implements Explorer {
                     positionsToAvoid.add(toTheRightOf(direction).step(relPos));
                     // super, że mamy ścianę :).
                 } catch (Exit e) {
-                    relPos = toTheRightOf(direction).step(relPos);
-                    directionsTaken.push(toTheRightOf(direction));
-
-                    waterMovesDone = 0;
-                    sumOfTurns += 1;
-
-                    System.out.println("Victoria");
                     return;
                 }
             }
@@ -145,7 +122,6 @@ public class Indiana implements Explorer {
                 if (positionsToAvoid.contains(direction.step(relPos))) {
                     throw new Wall();
                 }
-                if (!positionsToAvoid.isEmpty()) prevPrevPos = oppositeOf(directionsTaken.peek()).step(relPos);
                 controller.move(direction);
                 relPos = direction.step(relPos);
                 directionsTaken.push(direction);
@@ -158,7 +134,6 @@ public class Indiana implements Explorer {
                 positionsToAvoid.add(relPos);
                 waterMovesDone = 0;
                 fireToFront = true;
-                continue;
             } catch (Flooded e) {
                 relPos = direction.step(relPos);
                 directionsTaken.push(direction);
@@ -170,14 +145,7 @@ public class Indiana implements Explorer {
                 // no to teraz niestety trzeba iść w lewo.
                 direction = toTheLeftOf(direction);
                 sumOfTurns -= 1;
-                continue;
             } catch (Exit e) {
-                relPos = direction.step(relPos);
-                directionsTaken.push(direction);
-
-                waterMovesDone = 0;
-
-                System.out.println("Victoria");
                 return;
             }
         }
