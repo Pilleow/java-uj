@@ -3,7 +3,7 @@ public class Tester {
         PlayerController pc = new PC1();
         Explorer exp = new Indiana();
         exp.setPlayerController(pc);
-        exp.underwaterMovesAllowed(5);
+        exp.underwaterMovesAllowed(10);
         exp.findExit();
     }
 }

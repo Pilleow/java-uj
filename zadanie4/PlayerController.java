@@ -1,3 +1,4 @@
+import java.util.HashSet;
 
 /**
  * Kontroler gracza
@@ -21,5 +22,5 @@ public interface PlayerController {
 
 	Position getRelativePos();
 
-	void print(Direction direction);
+	void print(HashSet<Position> positionsToAvoid);
 }

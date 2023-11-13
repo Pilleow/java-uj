@@ -1,3 +1,5 @@
+import java.util.HashSet;
+
 public class PC1 implements PlayerController {
 
     final byte[][] map1 = { // ustaw STARTPOS = (5, 2)
@@ -7,7 +9,7 @@ public class PC1 implements PlayerController {
             {0, 0, 1, 0, 0, 1, 3, 0, 1, 0},
             {0, 3, 1, 1, 1, 1, 1, 1, 1, 0},
             {0, 0, 0, 0, 0, 0, 3, 1, 0, 0},
-            {0, 1, 1, 1, 1, 1, 0, 1, 1, 0},
+            {0, 2, 2, 2, 2, 1, 0, 1, 1, 0},
             {0, 1, 0, 0, 0, 1, 0, 0, 2, 0},
             {0, 1, 0, 3, 1, 1, 2, 2, 1, 0},
             {0, 1, 0, 0, 0, 0, 0, 0, 0, 0},
@@ -38,7 +40,19 @@ public class PC1 implements PlayerController {
             {3, 1, 1, 1, 1, 1, 1, 1, 1, 3},
             {3, 3, 3, 3, 3, 3, 3, 3, 3, 3},
     };
-    final byte[][] map = map3; // TUTAJ ZMIENIA SIĘ MAPĘ
+    final byte[][] map4 = { // ustaw STARTPOS = (5, 4)
+            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+            {0, 3, 1, 3, 1, 2, 3, 3, 1, 0},
+            {0, 1, 2, 2, 1, 2, 2, 2, 2, 0},
+            {0, 2, 0, 0, 0, 0, 0, 1, 2, 2},
+            {0, 2, 1, 0, 1, 1, 0, 0, 0, 0},
+            {0, 1, 2, 0, 1, 1, 0, 1, 3, 0},
+            {0, 2, 2, 0, 1, 0, 0, 2, 2, 0},
+            {0, 1, 2, 2, 2, 1, 2, 2, 1, 0},
+            {0, 2, 2, 1, 2, 2, 2, 2, 2, 0},
+            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    };
+    final byte[][] map = map4; // TUTAJ ZMIENIA SIĘ MAPĘ
     // 0 - ściana
     // 1 - ścieżka
     // 2 - woda
@@ -93,11 +107,12 @@ public class PC1 implements PlayerController {
     }
 
 
-    public void print(Direction direction) {
+    public void print(HashSet<Position> positionsToAvoid) {
 
         // printing board to screen
         if (!drawnAtPos.equals(currentPos)) {
             drawnAtPos = currentPos;
+            Position p = new Position(0, 0);
 
             int x;
 
@@ -108,7 +123,13 @@ public class PC1 implements PlayerController {
             System.out.println();
             for (int y = 0; y < map.length; ++y) {
                 for (x = 0; x < map[0].length; ++x) {
-                    if (currentPos.row() == y && currentPos.col() == x) System.out.print("\uD83D\uDC0D");
+                    p = new Position(x, y);
+                    if (currentPos.equals(p)) {
+                        System.out.print("\uD83D\uDC0D");
+                        continue;
+                    }
+                    p = new Position(x - STARTPOS.col(), y - STARTPOS.row());
+                    if (positionsToAvoid.contains(p)) System.out.print("\uD83D\uDEAB");
                     else {
                         switch (map[y][x]) {
                             case 0:
