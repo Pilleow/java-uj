@@ -12,6 +12,7 @@ public class PC1 implements PlayerController {
             {0, 1, 0, 3, 1, 1, 2, 2, 1, 0},
             {0, 1, 0, 0, 0, 0, 0, 0, 0, 0},
     };
+
     final byte[][] map2 = { // ustaw STARTPOS = (5, 4)
             {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
             {0, 1, 1, 1, 1, 1, 1, 1, 1, 0},
@@ -25,13 +26,25 @@ public class PC1 implements PlayerController {
             {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
     };
 
-    final byte[][] map = map1; // TUTAJ ZMIENIA SIĘ MAPĘ
+    final byte[][] map3 = { // ustaw STARTPOS = (5, 4)
+            {3, 3, 3, 3, 3, 3, 3, 3, 3, 3},
+            {3, 1, 1, 1, 1, 1, 1, 1, 1, 3},
+            {3, 1, 1, 1, 1, 1, 1, 1, 1, 3},
+            {3, 1, 3, 3, 1, 3, 3, 1, 1, 1},
+            {3, 1, 1, 3, 1, 1, 3, 3, 3, 3},
+            {3, 1, 1, 3, 1, 1, 3, 1, 1, 3},
+            {3, 1, 1, 3, 3, 3, 3, 1, 1, 3},
+            {3, 1, 1, 1, 1, 1, 1, 1, 1, 3},
+            {3, 1, 1, 1, 1, 1, 1, 1, 1, 3},
+            {3, 3, 3, 3, 3, 3, 3, 3, 3, 3},
+    };
+    final byte[][] map = map3; // TUTAJ ZMIENIA SIĘ MAPĘ
     // 0 - ściana
     // 1 - ścieżka
     // 2 - woda
     // 3 - ogień
 
-    final Position STARTPOS = new Position(5, 2);
+    final Position STARTPOS = new Position(5, 4);
     Position currentPos = STARTPOS;
     Position drawnAtPos = currentPos;
     int timesOnFire = 0;
