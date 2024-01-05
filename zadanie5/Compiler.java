@@ -20,15 +20,38 @@ class LP implements ProgrammableCalculatorInterface.LinePrinter {
     }
 }
 
-public class Compiler {
-    public static void main(String[] args) throws FileNotFoundException {
-        BufferedReader reader = new BufferedReader(new FileReader("main.ORAMUS"));
+public class Compiler extends Thread {
+    public static void main(String[] args)  {
 
-        ProgrammableCalculator pc = new ProgrammableCalculator();
+        Compiler thread = new Compiler();
+        thread.start();
+        long start, end;
+        start = System.currentTimeMillis();
+        while (thread.isAlive()) {
+            try {
+                //noinspection BusyWait
+                Thread.sleep(1);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        end = System.currentTimeMillis();
+        System.out.println("Time taken: " + (end - start) + " ms.");
+    }
+
+    public void run() {
+        BufferedReader reader;
+        try {
+            reader = new BufferedReader(new FileReader("main.ORAMUS"));
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+
+        ProgrammableCalculator2 pc = new ProgrammableCalculator2();
         pc.programCodeReader(reader);
         pc.setStdin(new LR());
         pc.setStdout(new LP());
 
-        pc.run(3);
+        pc.run(1);
     }
 }

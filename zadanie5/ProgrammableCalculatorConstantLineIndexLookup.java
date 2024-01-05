@@ -1,7 +1,9 @@
 import java.io.BufferedReader;
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Stack;
 
-class ProgrammableCalculator implements ProgrammableCalculatorInterface {
+class ProgrammableCalculator2 implements ProgrammableCalculatorInterface {
     BufferedReader reader;
     LineReader input;
     LinePrinter output;
@@ -13,7 +15,7 @@ class ProgrammableCalculator implements ProgrammableCalculatorInterface {
     HashMap<Integer, String[]> codeLines = new HashMap<>();
     HashMap<String, Integer> variables = new HashMap<>();
     int[] linesArray;
-    // HashMap<Integer, Integer> linesArrayIndexes = new HashMap<>();
+    HashMap<Integer, Integer> linesArrayIndexes = new HashMap<>();
 
     /**
      * Metoda ustawia BufferedReader, który pozwala na odczyt kodu źródłowego
@@ -32,7 +34,7 @@ class ProgrammableCalculator implements ProgrammableCalculatorInterface {
      * @param input nowe standardowe wejście
      */
     @Override
-    public void setStdin(ProgrammableCalculatorInterface.LineReader input) {
+    public void setStdin(LineReader input) {
         this.input = input;
     }
 
@@ -58,7 +60,7 @@ class ProgrammableCalculator implements ProgrammableCalculatorInterface {
 
         linesArray = Arrays.stream(codeLines.keySet().toArray(Integer[]::new)).mapToInt(Integer::intValue).toArray();
         Arrays.sort(linesArray);
-        // indexLineArrays();
+        indexLineArrays();
         int lineArrayIndex = getIndexOfLine(line);
 
         // Teraz w codeLines mamy każdą linię kodu w formacie
@@ -88,22 +90,22 @@ class ProgrammableCalculator implements ProgrammableCalculatorInterface {
         }
     }
 
-//    private void indexLineArrays() {
-//        for (int i = 0; i < linesArray.length; ++i) {
-//            linesArrayIndexes.put(linesArray[i], i);
-//        }
-//    }
+    private void indexLineArrays() {
+        for (int i = 0; i < linesArray.length; ++i) {
+            linesArrayIndexes.put(linesArray[i], i);
+        }
+    }
 
     private int getIndexOfLine(int l) {
-        for (int i = 0; i < linesArray.length; ++i) {
-            if (l == linesArray[i]) return i;
-        }
-        throw new IllegalStateException("Nie znaleziono linii " + l + " w mapie zarejestrowanych linii.");
-//        try {
-//            return linesArrayIndexes.get(l);
-//        } catch (Exception e) {
-//            throw new IllegalStateException("Nie znaleziono linii " + l + " w mapie zarejestrowanych linii.");
+//        for (int i = 0; i < linesArray.length; ++i) {
+//            if (l == linesArray[i]) return i;
 //        }
+//        throw new IllegalStateException("Nie znaleziono linii " + l + " w mapie zarejestrowanych linii.");
+        try {
+            return linesArrayIndexes.get(l);
+        } catch (Exception e) {
+            throw new IllegalStateException("Nie znaleziono linii " + l + " w mapie zarejestrowanych linii.");
+        }
     }
 
     private void parseCodeFromReader() {
