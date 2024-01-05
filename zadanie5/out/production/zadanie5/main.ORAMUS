@@ -1,0 +1,18 @@
+3 PRINT "Podaj N"
+4 InPUt N
+5 LEt a = 0
+6 Print "a wgrane"
+7 LeT Bb = 1
+8 print "bb wgrane"
+9 LET ccC = a + bB
+10 Let i = 0
+11 LEt a = bb
+12 LEt bb = ccc
+14 LEt ccc = a + bb
+16 LEt i = i + 1
+20 IF n > i GOTO 11
+25 PRINT "FIB(N) "
+30 PRINT a
+35 PRINT "Kończymy zabawę?"
+50 END
+55 PRINT "KONIEC MIAŁ BYĆ!!1!1!JEden1"
